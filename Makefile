@@ -33,7 +33,7 @@ LIBS = -lm -lSDL_ttf
 
 # define the C source files
 # TODO: update and complete the following line with your .c files names
-SRCS = main.c pieces.c
+SRCS = pentomino.c  #main.c pieces.c 
 
 # define the C object files 
 #
@@ -60,7 +60,7 @@ all:  $(MAIN)
 	@echo  "Everything has been compiled, w00t!"
 
 $(MAIN): $(OBJS) 
-	$(CC) $(OBJS) $(CFLAGS) $(WARNINGS) $(INCLUDES) -o $(MAIN) $(LFLAGS) $(LIBS)
+	$(CC) -g $(OBJS) $(CFLAGS) $(WARNINGS) $(INCLUDES) -o $(MAIN) $(LFLAGS) $(LIBS)
 
 # this is a suffix replacement rule for building .o's from .c's
 # it uses automatic variables $<: the name of the prerequisite of
