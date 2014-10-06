@@ -16,21 +16,19 @@ typedef struct{
 
 typedef struct {
   int tab[5][5];
-  //pos coord;
-  //color rgb;
+  pos coord;
+  color rgb;
   int entier;
 }object;
 
-struct object_list_cell{
+typedef struct {
   object data;
-  struct object_list_cell * next;
-};
-
-typedef struct object_list_cell * object_list;
+  struct object_list * next;
+}object_list;
 
 /* "constructors" */
 
-object_list object_list_cons(object p, object_list L);
+object_list * object_list_cons(object p, object_list* L);
 
 /* access functions */
 

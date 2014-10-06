@@ -5,10 +5,19 @@
 
 int main(void)
 {
-  object_list L = NULL;
+  object_list * L = NULL;
+
   L = lirePiece();
+  L = L->next;
+  afficherPiece(&(L->data));
+  
+  rotatePiece(&(L->data));
+  afficherPiece(&(L->data));
+  
+  rotatePiece(&(L->data));
+  afficherPiece(&(L->data));
 
-  //afficherPiece(L);
-
+  rotatePiece(&(L->data));
+  afficherPiece(&(L->data));
   return 0;
 }
