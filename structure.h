@@ -1,5 +1,6 @@
 #ifndef STRUCTURE_H_INCLUDED
 #define STRUCTURE_H_INCLUDED
+#include "SDL.h"
 
 typedef struct{
   int x;
@@ -16,6 +17,7 @@ typedef struct{
 
 typedef struct {
   int tab[5][5];
+  SDL_Rect src_rect;
   pos coord;
   color rgb;
   int entier;
