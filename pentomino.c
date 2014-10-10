@@ -1,40 +1,61 @@
 #include "SDL.h"
+#include "pentomino.h"
 #define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT 480
 #define SPRITE_SIZE    32
+#define img_path "bloc.bmp"
 
-
-int main ( int argc, char *argv[] )
+void init(void)
 {
-  SDL_Surface *ecran = NULL, *rectangle = NULL, *temp, *sprite, *grass;
-  SDL_Rect rcSprite, rcGrass, position;
-  SDL_Event event;
-  Uint8 *keystate;
+  int i;
   
-  int colorkey, gameover;
+  gameover = 0;
 
-
+  /* initialize SDL */
   SDL_Init(SDL_INIT_VIDEO);
-
-  /* set the title bar */
-  SDL_WM_SetCaption("SDL Move", "SDL Move");
-
+  SDL_WM_SetCaption("Pentomino", "SDL Animation");
   /* create window */
-  ecran = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE);
+  screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE);
 
-  rectangle = SDL_CreateRGBSurface(SDL_HWSURFACE, 220, 180, 32, 0, 0, 0, 0);
-  SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 17, 206, 112));
- 
-  position.x = 0;
-  position.y = 0;
+  /* Init pieces */
+  for(i=0;i<12 && L->next != NULL;i++)
+    {
+      L->data.coord.x = 0;
+      L->data.coord.y = i * 50;
+    }
+}
 
-  SDL_FillRect (rectangle, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
-  SDL_BlitSurface(rectangle, NULL, ecran, &position);
-  SDL_Flip(ecran);
+void main_loop(void)
+{
+  while(!gameover){
+    handle_events();
+    handle_pieces();    
+  }
+}
 
-  pause();
+void handle_events(void)
+{
+  SDL_Event event;
+  object * piece;
+  while(SDL_PollEvent(&event) && !gameover){
+    if (event.type == SDL_QUIT)
+      gameover = 1;
+  }
+  
+}
 
-  SDL_FreeSurface(rectangle);
-  SDL_Quit(); 
-  return 0;
+void handle_pieces(void)
+{
+  SDL_Surface* temp = SDL_LoadBMP(img_path);
+  object * obj;
+  while (L->next != NULL){
+    obj = &(L->data);
+    obj->src_rect.x = 0;
+    obj->src_rect.y = 0;
+    obj->src_rect.w = 16;
+    obj->src_rect.h = 16;
+    SDL_BlitSurface(temp, NULL, screen, &(obj->src_rect));
+    L = L->next;
+    //test
+    }
 }
