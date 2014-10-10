@@ -34,7 +34,7 @@ LIBS = -lm -lSDL_ttf
 # define the C source files
 # TODO: update and complete the following line with your .c files names
 
-SRCS = main.c structure.c pieces.c
+SRCS = main.c structure.c pieces.c pentomino.c
 
 # define the C object files 
 #
