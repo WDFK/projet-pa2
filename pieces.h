@@ -1,7 +1,7 @@
 #ifndef PIECES_H_INCLUDED
 #define PIECES_H_INCLUDED
-
-object_list * lirePiece(void);
+#include "structure.h"
+object_list * lirePiece(object_list *);
 object initTab(object p);
 void afficherPiece(object * L);
 void rotatePiece(object * p);

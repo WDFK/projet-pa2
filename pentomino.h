@@ -2,17 +2,13 @@
 #define PENTO_H_INCLUDED
 #include "structure.h"
 #include "pieces.h"
-#include "SDL.h"
-
 int gameover;
 // Screen
 SDL_Surface* screen;
 // Pieces list
-object_list * L;
-object_list ** LL;
 
-void init(void);
-void main_loop(void);
+void init(object_list *);
+void main_loop(object_list *);
 void handle_events(void);
-void handle_pieces(int x, int y);
+void handle_pieces(int x, int y, object);
 #endif

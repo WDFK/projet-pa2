@@ -1,7 +1,6 @@
 #ifndef STRUCTURE_H_INCLUDED
 #define STRUCTURE_H_INCLUDED
 #include "SDL.h"
-
 typedef struct{
   int x;
   int y;

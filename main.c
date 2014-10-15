@@ -1,15 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "structure.h"
-#include "pieces.h"
 #include "SDL.h"
+#include "structure.h"
 #include "pentomino.h"
+#include "pieces.h"
+
 
 int main(void)
 {
-  L = lirePiece();
-  LL = &L;
-  init();
-  main_loop();
+  object_list * L;
+  L = lirePiece(L);
+  init(L);
+  main_loop(L);
   return 0;
 }
