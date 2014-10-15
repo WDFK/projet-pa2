@@ -20,7 +20,6 @@ typedef struct {
   SDL_Rect src_rect;
   pos coord;
   color rgb;
-  int entier;
 }object;
 
 typedef struct {

@@ -9,9 +9,10 @@ int gameover;
 SDL_Surface* screen;
 // Pieces list
 object_list * L;
+object_list ** LL;
 
 void init(void);
 void main_loop(void);
 void handle_events(void);
-void handle_pieces(void);
+void handle_pieces(int x, int y);
 #endif

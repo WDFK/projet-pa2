@@ -8,7 +8,7 @@
 int main(void)
 {
   L = lirePiece();
-
+  LL = &L;
   init();
   main_loop();
   return 0;
