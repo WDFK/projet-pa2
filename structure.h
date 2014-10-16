@@ -6,19 +6,13 @@ typedef struct{
   int y;
 }pos;
 
-typedef struct{
-  char r;
-  char g;
-  char b;
-}color;
-
 //typedef struct piece * piece_ptr;
 
 typedef struct {
   int tab[5][5];
   SDL_Rect src_rect;
   pos coord;
-  color rgb;
+  Uint32 rgb;
 }object;
 
 typedef struct {

@@ -15,8 +15,6 @@ object_list *  object_list_cons(object p, object_list * L)
       new->data = p;
     }
   }
-  printf("new : %p\n", new);
-  afficherPiece(&p);
   new->next = L;
   return new;
 }
