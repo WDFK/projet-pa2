@@ -4,9 +4,7 @@
 #include "pieces.h"
 #include "structure.h"
 
-
-object_list *  object_list_cons(object p, object_list * L)
-{
+object_list *  object_list_cons(object p, object_list * L){
   int i, j;
   object_list * new = NULL;
   new = (object_list*)malloc(sizeof(object_list));
@@ -15,6 +13,6 @@ object_list *  object_list_cons(object p, object_list * L)
       new->data = p;
     }
   }
-  new->next = L;
+  new->next = (struct object_list *)L;
   return new;
 }

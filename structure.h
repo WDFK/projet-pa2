@@ -24,11 +24,6 @@ typedef struct {
 
 object_list * object_list_cons(object p, object_list* L);
 
-/* access functions */
-
-//bool object_list_is_empty(object_list L);
-//object object_list_head(object_list L);
-
 /* free function */
 
 //void object_list_free(object_list * L);

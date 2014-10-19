@@ -4,25 +4,22 @@
 #include "structure.h"
 #include "pieces.h"
 
-object initTab(object p)
+void initTab(object * p)
 {
   int i, j;
-  for (i = 0; i < 5; ++i)
-    {
-      for (j = 0; j < 5; ++j)
-	{
-	  p.tab[i][j] = 0;
-	}
+  for (i = 0; i < 5; ++i){
+    for (j = 0; j < 5; ++j){
+      p->tab[i][j] = 0;
     }
-  return p;
+  }
 }
 
-object_list* lirePiece(object_list * L)
+object_list * lirePiece(object_list * L)
 {  
   FILE * ptr_file;
   
   ptr_file = fopen("source.txt", "r");
-  if (ptr_file == NULL){
+  if (!ptr_file){
     printf("Error opening file");
     exit;
   }
@@ -32,26 +29,24 @@ object_list* lirePiece(object_list * L)
   i = 0;
   j = 0;
   c = 'a';
-  tmp = initTab(tmp);
+  initTab(&tmp);
 
-  object_list_cons(tmp, L);
   do {
     d = c;
-    c = fgetc(ptr_file);
-    
+    c = fgetc(ptr_file);    
     if (c == '#'){
       tmp.tab[i][j] = 1;
       ++j;
     }
     else if (c == '\n' && d == '\n'){
       L = object_list_cons(tmp, L);
-      tmp = initTab(tmp);
+      initTab(&tmp);
       i = 0;
       j = 0;
     }
     else if (c == '\n'){
       ++i;
-      j = 0;	
+      j = 0;
     }
     else{
       ++j;
@@ -62,23 +57,23 @@ object_list* lirePiece(object_list * L)
   return L;
 }
 
-void afficherPiece(object * l)
-{
-  int i, j;  
-    for(i=0; i<5; i++){
-	for(j=0; j<5; j++){
-	  printf("%d ",l->tab[i][j]);
-	  }
-	printf("\n");
-      }
-    printf("\n");
-}
+/* void afficherPiece(object * l) */
+/* { */
+/*   int i, j;   */
+/*     for(i=0; i<5; i++){ */
+/* 	for(j=0; j<5; j++){ */
+/* 	  printf("%d ",l->tab[i][j]); */
+/* 	  } */
+/* 	printf("\n"); */
+/*       } */
+/*     printf("\n"); */
+/* } */
 
 void rotatePiece(object * p)
 {
   object p2 = *p;
   int i, j;
-  *p = initTab(*p);
+  initTab(p);
   for(i=0;i<5;i++){
     for(j=0;j<5;j++){
       if(p2.tab[i][j] == 1){
@@ -117,8 +112,7 @@ void rognerLigne(object * p){
     }
   }
   for(i=0;i<5;i++)
-    p->tab[4][i] = 0;
-  
+    p->tab[4][i] = 0;  
 }
 
 void rognerColonne(object * p){

@@ -11,8 +11,11 @@ SDL_Surface* screen;
 void init(object_list * L);
 void main_loop(object_list * L);
 void handle_events(object_list * L);
-void draw_piece(int x, int y, object);
+void draw_piece(object);
 void draw_all_pieces(object_list * L);
 object_list * checkCollide(int x, int y, object_list * L);
 void handlePieceMov(object_list * p, SDL_Event * event);
+void draw_corners(void);
+int checkWin(object_list * L);
+void initPiecesCoord(object_list * L);
 #endif

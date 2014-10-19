@@ -9,37 +9,29 @@
 #define img_path "bloc.bmp"
 
 void init(object_list * L){
-  int i = 0;
   gameover = 0;
 
   /* initialize SDL */
   SDL_Init(SDL_INIT_VIDEO);
   SDL_WM_SetCaption("Pentomino", "SDL Animation");
-  SDL_EnableKeyRepeat(700, 70);
+  //SDL_EnableKeyRepeat(700, 70);
   /* create window */
-  screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, SDL_HWSURFACE);
+  screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, SDL_HWSURFACE);  
 
   /* Init pieces coord */
-  
-   do {
-     //printf("\n\n%p\n", L);
-     L->data.coord.x = 80*i > 480 ? 80*(i-6) : 80*i;
-     L->data.coord.y = 80*i > 480 ? 80 : 0;
-	 
-     L = L->next;
-     i++;
-   }while (L != NULL);
+  initPiecesCoord(L);
 }
 
 void main_loop(object_list * L){
-  object_list * L_tmp = L;
-  int i = 0;
   int last_time_ms = 0;
 
   while(!gameover){
     while (SDL_GetTicks() - last_time_ms < 1000/60);
     last_time_ms = SDL_GetTicks();
     handle_events(L);
+    if(checkWin(L)){
+      gameover = 1;
+    }
   }
 }
 
@@ -69,12 +61,15 @@ void handle_events(object_list * L){
 	  if(piece)
 	    rotatePiece(&piece->data);
 	  break;
+	case SDL_BUTTON_MIDDLE:
+	  initPiecesCoord(L);
+	  break;
 	default:
 	  break;
 	}	
       }
     }
-    handlePieceMov(piece, &event);    
+    handlePieceMov(piece, &event);
     draw_all_pieces(L);
   }while(mouseleft);
 }
@@ -95,46 +90,82 @@ object_list * checkCollide(int x, int y, object_list * L){
 	return L;
       }
     }
-    L = L->next;
-  }while (L != NULL);
+    L = (object_list *)L->next;
+  }while (L);
   return NULL;
 }
 
-void draw_piece(int x, int y, object p){
+void draw_piece(object p){
   SDL_Surface* temp = SDL_LoadBMP(img_path);
   object * obj;
   int i, j, tmp;
-  tmp = x;
+  tmp = p.coord.x;
     for(i=0; i<5; i++){
       for(j=0; j<5; j++){
 	if(p.tab[i][j] == 1){
 	  obj = &p;
-	  obj->src_rect.x = x;
-	  obj->src_rect.y = y;
+	  obj->src_rect.x = p.coord.x;
+	  obj->src_rect.y = p.coord.y;
 	  obj->src_rect.w = 16;
 	  obj->src_rect.h = 16;
 	  SDL_BlitSurface(temp, NULL, screen, &(obj->src_rect));
 	  //Draw_Line(screen, x, y, x+16, y, p.rgb);
 	}
-	x += 16;
+	p.coord.x += 16;
       }
-      y += 16;
-      x = tmp;
+      p.coord.y += 16;
+      p.coord.x = tmp;
     }
+    //SDL_FreeSurface(temp);
 }
 
-/* void Draw_Line(SDL_Surface *super, */
-/*                Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, */
-/*                Uint32 color); */
-
-
 void draw_all_pieces(object_list * L){  
-  int i = 16;
+  object_list * tmp = L;
   SDL_FillRect(SDL_GetVideoSurface(), NULL, 0 );
-  while(L!=NULL){
-    draw_piece(L->data.coord.x, L->data.coord.y, L->data);
-    L = L->next;
-    
+  while(L){
+    draw_piece(L->data);
+    L = (object_list *)L->next;    
   }
+  draw_corners();
   SDL_Flip(screen);
+  //L = tmp;
+}
+
+void draw_corners(void){
+  SDL_Rect tmp;
+  //SDL_Surface * bloc = SDL_LoadBMP(img_path);
+  tmp.x = 240;
+  tmp.y = 240;
+  tmp.w = 16;
+  tmp.h = 16;
+  SDL_BlitSurface(SDL_LoadBMP(img_path), NULL, screen, &tmp);
+  tmp.y = 352;
+  SDL_BlitSurface(SDL_LoadBMP(img_path), NULL, screen, &tmp);
+  tmp.x = 416;
+  SDL_BlitSurface(SDL_LoadBMP(img_path), NULL, screen, &tmp);
+  tmp.y = 240;
+  SDL_BlitSurface(SDL_LoadBMP(img_path), NULL, screen, &tmp);
+  SDL_Flip(screen);
+}
+
+int checkWin(object_list * L){
+  int i, j;
+  for (i = 0; i < 10; ++i){
+    for (j = 0; j < 6; ++j){
+      if (!checkCollide(257 + 16*i, 257 + 16*j, L)){
+	return 0;
+      }
+    }
+  }
+  return 1;
+}
+
+void initPiecesCoord(object_list * L){
+  int i = 1;
+  do {
+    L->data.coord.x = 80*i > 480 ? 80*(i-6) : 80*i;
+    L->data.coord.y = 80*i > 480 ? 80 : 0;	 
+    L = (object_list *)L->next;
+    i++;
+  }while (L);
 }
