@@ -1,12 +1,8 @@
 #include "SDL.h"
-#include "SDL_draw.h"
+#include "draw.h"
 #include "pieces.h"
 #include "structure.h"
 #include "pentomino.h"
-#define SCREEN_WIDTH  640
-#define SCREEN_HEIGHT 640
-#define SPRITE_SIZE 16
-#define img_path "bloc.bmp"
 
 void init(object_list * L){
   gameover = 0;
@@ -20,6 +16,7 @@ void init(object_list * L){
 
   /* Init pieces coord */
   initPiecesCoord(L);
+  initPiecesColor(L);
 }
 
 void main_loop(object_list * L){
@@ -98,6 +95,7 @@ object_list * checkCollide(int x, int y, object_list * L){
 void draw_piece(object p){
   SDL_Surface* temp = SDL_LoadBMP(img_path);
   object * obj;
+
   int i, j, tmp;
   tmp = p.coord.x;
     for(i=0; i<5; i++){
@@ -109,14 +107,18 @@ void draw_piece(object p){
 	  obj->src_rect.w = 16;
 	  obj->src_rect.h = 16;
 	  SDL_BlitSurface(temp, NULL, screen, &(obj->src_rect));
-	  //Draw_Line(screen, x, y, x+16, y, p.rgb);
+	  drawLine(p.coord.x, p.coord.y, p.coord.x+15, p.coord.y, p.color);
+	  drawLine(p.coord.x+15, p.coord.y, p.coord.x+15, p.coord.y + 15, p.color);
+	  drawLine(p.coord.x, p.coord.y + 15, p.coord.x + 15, p.coord.y+15, p.color);
+	  drawLine(p.coord.x, p.coord.y, p.coord.x, p.coord.y + 15, p.color);
+	 
 	}
 	p.coord.x += 16;
       }
       p.coord.y += 16;
       p.coord.x = tmp;
     }
-    //SDL_FreeSurface(temp);
+    SDL_FreeSurface(temp);
 }
 
 void draw_all_pieces(object_list * L){  
@@ -133,6 +135,10 @@ void draw_all_pieces(object_list * L){
 
 void draw_corners(void){
   SDL_Rect tmp;
+  rgb coul;
+  coul.r = 255;
+  coul.g = 255;
+  coul.b = 255;
   //SDL_Surface * bloc = SDL_LoadBMP(img_path);
   tmp.x = 240;
   tmp.y = 240;
@@ -145,6 +151,11 @@ void draw_corners(void){
   SDL_BlitSurface(SDL_LoadBMP(img_path), NULL, screen, &tmp);
   tmp.y = 240;
   SDL_BlitSurface(SDL_LoadBMP(img_path), NULL, screen, &tmp);
+  drawLine(255, 255, 415, 255, coul);
+  drawLine(416, 255, 416, 352, coul);
+  drawLine(255, 352, 416, 352, coul);
+  drawLine(255, 255, 255, 352, coul);
+  
   SDL_Flip(screen);
 }
 
@@ -168,4 +179,75 @@ void initPiecesCoord(object_list * L){
     L = (object_list *)L->next;
     i++;
   }while (L);
+}
+
+void initPiecesColor(object_list * L){
+  int i = 0;
+  while (L != NULL){
+    switch (i){
+    case 0:
+      L->data.color.r = 255;
+      L->data.color.g = 0;
+      L->data.color.b = 0;
+      break;
+    case 1:
+      L->data.color.r = 255;
+      L->data.color.g = 255;
+      L->data.color.b = 0;
+      break;
+    case 2:
+      L->data.color.r = 255;
+      L->data.color.g = 123;
+      L->data.color.b = 0;
+      break;
+    case 3:
+      L->data.color.r = 0;
+      L->data.color.g = 255;
+      L->data.color.b = 0;
+      break;
+    case 4:
+      L->data.color.r = 128;
+      L->data.color.g = 128;
+      L->data.color.b = 128;
+      break;
+    case 5:
+      L->data.color.r = 153;
+      L->data.color.g = 0;
+      L->data.color.b = 76;
+      break;
+    case 6:
+      L->data.color.r = 51;
+      L->data.color.g = 0;
+      L->data.color.b = 25;
+      break;
+    case 7:
+      L->data.color.r = 0;
+      L->data.color.g = 51;
+      L->data.color.b = 0;
+      break;
+    case 8:
+      L->data.color.r = 255;
+      L->data.color.g = 0;
+      L->data.color.b = 255;
+      break;
+    case 9:
+      L->data.color.r = 0;
+      L->data.color.g = 0;
+      L->data.color.b = 255;
+      break;
+    case 10:
+      L->data.color.r = 160;
+      L->data.color.g = 160;
+      L->data.color.b = 160;
+      break;
+    case 11:
+      L->data.color.r = 0;
+      L->data.color.g = 51;
+      L->data.color.b = 0;
+      break;
+    }
+    
+    i++;
+    L = (object_list *)L->next;
+  }
 }
